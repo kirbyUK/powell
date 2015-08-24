@@ -21,6 +21,10 @@ if($help) { help } else { main }
 
 sub main
 {
+	# Validate the order:
+	die "Order '$order' is not a non-zero positive integer!\n"
+		unless($order > 0);
+
 	# Read the file(s):
 	my @samples;
 	for my $filename(@ARGV)

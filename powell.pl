@@ -56,12 +56,12 @@ sub main
 
 	# Traverse the chain to generate the text:
 	my @selected = split /\s/, $starts[rand @starts];
-	my $out = $selected[0] unless(@selected eq 1);
+	push my @out, $selected[0] unless(@selected eq 1);
 
 	do
 	{
-		if(defined $selected[1]) { $out .= " " . $selected[1] } else
-			{ $out .= " " . $selected[0] };
+		if(defined $selected[1]) { push @out, $selected[1] } else
+			{ push @out, $selected[0] };
 		push @selected,
 			$markov{join " ", @selected}->[rand @{$markov{join " ", @selected}}];
 		shift @selected;
@@ -69,8 +69,9 @@ sub main
 	while(defined $markov{join " ", @selected});
 
 	# Add the last word and some punctuation if needed:
-	if(@selected > 1) { $out .= " $_" for(@selected[1..(@selected - 1)]); } else
-		{ $out .= " " . $selected[0]; }
+	if(@selected > 1) { push @out, $_ for(@selected[1..(@selected - 1)]); } else
+		{ push @out, $selected[0]; }
+	my $out = join " ", @out;
 	$out .= "." unless($out =~ /[.!?]$/);
 
 	print $out, "\n";

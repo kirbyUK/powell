@@ -10,11 +10,16 @@ sub main; # The main body of the program.
 my $help = ""; # Print help (True/false).
 my $capital = ""; # Start the generated text with a capital letter.
 my $order = 2; # The order to use - this decides the size of each prefix.
-my $file = ""; # The file to process.
+my $separator = qr{\n}m; # The regex used to split records.
 GetOptions(
 	"help" => \$help,
 	"capital" => \$capital,
 	"order=i" => \$order,
+	"separator=s" => sub {
+		my ($opt_name, $opt_value) = @_;
+		$separator = qr{$opt_value}m;
+		die "Invalid separator regex '$opt_value'!" unless($separator);
+	}
 );
 
 if($help) { help } else { main }
@@ -30,9 +35,13 @@ sub main
 	for my $filename(@ARGV)
 	{
 		open my $file, '<', $filename or die "Cannot open '$filename': $!\n";
-		chomp(my @sample = <$file>);
-		push @samples, @sample;
+
+		# Slurp the file and split it with the specified separator:
+		local $/;
+		push @samples, split $separator, <$file>;
 	}
+	# Remove any blank samples and extrenuous whitespace:
+	@samples = map { $_ =~ s/\s+/ /gr } @samples;
 
 	# Construct the Markov chain
 	my %markov;
@@ -88,8 +97,10 @@ sub help
 	print "powell takes any number of files, reads them line by line and uses\n";
 	print " Markov chains to randomly construct a new string.\n\n";
 	print "Options are as follows:\n";
-	print "\t-h or --help:      Displays this help text and quits\n";
-	print "\t-o n or --order=n: Sets the order to use, where n is a positive\n";
+	print "\t-h or --help:          Displays this help text and quits\n";
+	print "\t-c or --capital:       Start the string with a capital letter.\n";
+	print "\t-o n or --order=n:     Sets the order to use, where n is a positive\n";
 	print "\t non-zero integer. The default order is 2.\n";
-	print "\t-c or --capital:   Start the string with a capital letter.\n";
+	print "\t-s r or --separator=r: Perl regex used to seperate records.\n";
+	print "\t The default is '\\n'.\n";
 }

@@ -104,3 +104,79 @@ sub help
 	print "\t-s r or --separator=r: Perl regex used to seperate records.\n";
 	print "\t The default is '\\n'.\n";
 }
+
+__END__
+
+=head1 NAME
+
+powell - A simple general-purpose random text generator using Markov chains
+
+=head1 VERSION
+
+Version 0.01
+
+=head1 USAGE
+
+powell takes at least one file as an argument, splits it into 'records'
+(determined by the 'separator' variable). It then uses these to generate a
+Markov chain, and generates random text using that.
+
+	powell [OPTIONS] [FILES]
+	powell frankenstein.txt
+	powell --order=3 --capital --separator="^\s*$" frankenstein.txt
+
+=head1 OPTIONS
+
+=over 4
+
+=item -h or --help
+
+Displays help text and exits
+
+=item -c or --capital
+
+Only generate text starting with a capital letter.
+
+=item -o [n] or --order=[n]
+
+The 'order' to use for the Markov chain. Takes a single non-zero positive
+integer. The larger the order, the larger the prefixes in the chain and the
+closer to the original text the output will be. Default is 2. 
+
+=item -s [regex] or --separator=[regex]
+
+The separator used to split entries. The text generation stops once it reaches
+text with no following text. If you were to split a book by paragraphs, for
+example, you can generally expect about a paragraph worth of output. Takes any
+valid Perl regex. The default is to split by line ('\n').
+
+=head1 AUTHOR
+
+Alex Kerr, C<< <kirby at cpan.org> >>
+
+=head1 ACKNOWLEDGEMENTS
+
+=over 2
+
+=item Allen B. Downey
+
+For 'Learning Perl the Hard Way'
+
+=item Jeff Atwood
+
+For 'Markov and You', an article on his blog 'Coding Horror'.
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright (c) Alex Kerr 2015
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.

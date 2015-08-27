@@ -150,6 +150,8 @@ text with no following text. If you were to split a book by paragraphs, for
 example, you can generally expect about a paragraph worth of output. Takes any
 valid Perl regex. The default is to split by line ('\n').
 
+=back
+
 =head1 AUTHOR
 
 Alex Kerr, C<< <kirby at cpan.org> >>
@@ -165,6 +167,8 @@ For 'Learning Perl the Hard Way'
 =item Jeff Atwood
 
 For 'Markov and You', an article on his blog 'Coding Horror'.
+
+=back
 
 =head1 LICENSE AND COPYRIGHT
 
